@@ -133,13 +133,17 @@ func (c *ProdukController) GetDownloadProdukImage(ctx *gin.Context) {
 
 // Commands
 func (c *ProdukController) CreateProduk(ctx *gin.Context) {
+	// Rules
+	allowedTypes := []string{"image/jpg", "image/png", "image/jpeg"}
+	maxSize := 5
+
 	// Request Body
-	name := ctx.PostForm("name")
-	deskripsi := ctx.PostForm("deskripsi")
-	hargaStr := ctx.PostForm("harga")
-	kategori := ctx.PostForm("kategori")
-	jumlahStr := ctx.PostForm("jumlah")
-	lokasi := ctx.PostForm("lokasi")
+	name := ctx.Request.FormValue("name")
+	deskripsi := ctx.Request.FormValue("deskripsi")
+	hargaStr := ctx.Request.FormValue("harga")
+	kategori := ctx.Request.FormValue("kategori")
+	jumlahStr := ctx.Request.FormValue("jumlah")
+	lokasi := ctx.Request.FormValue("lokasi")
 
 	// Parse Int from form
 	harga, err := strconv.Atoi(hargaStr)
@@ -157,6 +161,39 @@ func (c *ProdukController) CreateProduk(ctx *gin.Context) {
 	var produkImage *string
 	file, err := ctx.FormFile("produk_image")
 	if err == nil {
+		// Validate File Size
+		if file.Size > int64(maxSize)*1024*1024 {
+			ctx.JSON(http.StatusBadRequest, gin.H{"message": fmt.Sprintf("file size must be less than %dMB", maxSize)})
+			return
+		}
+
+		// Open File & Validate File Type
+		fileHeader, err := file.Open()
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"message": "failed to open file"})
+			return
+		}
+		defer fileHeader.Close()
+		buffer := make([]byte, 512)
+		_, err = fileHeader.Read(buffer)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"message": "failed to read file"})
+			return
+		}
+		fileType := http.DetectContentType(buffer)
+		valid := false
+		for _, t := range allowedTypes {
+			if fileType == t {
+				valid = true
+				break
+			}
+		}
+		if !valid {
+			ctx.JSON(http.StatusBadRequest, gin.H{"message": fmt.Sprintf("file type must be %s", strings.Join(allowedTypes, ", "))})
+			return
+		}
+
+		// Save File
 		filename := fmt.Sprintf("%d_%s", time.Now().Unix(), file.Filename)
 		filePath := "storages/" + filename
 		if err := ctx.SaveUploadedFile(file, filePath); err != nil {
@@ -192,10 +229,16 @@ func (c *ProdukController) CreateProduk(ctx *gin.Context) {
 	}
 
 	// Response
+	imageURL := interface{}(nil)
+	if produkImage != nil {
+		imageURL = fmt.Sprintf("http://%s/api/produk/produk_image/%d", ctx.Request.Host, produk.ID)
+	}
+
 	ctx.JSON(http.StatusCreated, gin.H{
 		"data": gin.H{
 			"produk":     produk,
 			"inventaris": inventaris,
+			"image":      imageURL,
 		},
 		"message": "produk created",
 	})
