@@ -1,0 +1,787 @@
+{
+	"info": {
+		"_postman_id": "8daee3b6-a9a1-42de-b78d-f3f7184b3f02",
+		"name": "Assignment 26",
+		"description": "Berikut adalah dokumentasi API dari Assignment 23 Bootcamp Golang BE Dibimbing. Menggunakan framework Gin Go dan database MySQL",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "18882129",
+		"_collection_link": "https://www.postman.com/universal-firefly-984425/workspace/assignment-day-23-bootcamp-golang-be/collection/18882129-8daee3b6-a9a1-42de-b78d-f3f7184b3f02?action=share&source=collection_link&creator=18882129"
+	},
+	"item": [
+		{
+			"name": "Inventaris",
+			"item": [
+				{
+					"name": "Inventaris Produk By Produk Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has data and message\", function () {",
+									"    pm.response.to.have.status(200)",
+									"    const jsonData = pm.response.json()",
+									"    ",
+									"    pm.expect(jsonData).to.have.property(\"data\")",
+									"    pm.expect(jsonData).to.have.property(\"message\")",
+									"    pm.expect(jsonData.data).to.be.an(\"object\")",
+									"})",
+									"",
+									"pm.test(\"Validate each data type (Produk)\", function () {",
+									"\t\tconst jsonData = pm.response.json().data",
+									"\t\tconst stringCol = [\"CreatedAt\",\"UpdatedAt\",\"name\",\"deskripsi\",\"kategori\"]",
+									"\t\tstringCol.forEach(dt => {",
+									"\t\t\t\tpm.expect(jsonData).to.have.property(dt).that.is.a(\"string\")",
+									"\t\t})",
+									"",
+									"\t\tconst numberCol = [\"ID\",\"harga\"]",
+									"\t\tnumberCol.forEach(dt => {",
+									"\t\t\t\tpm.expect(jsonData).to.have.property(dt).that.is.a(\"number\")",
+									"\t\t})",
+									"",
+									"\t\tconst stringNullableCol = [\"DeletedAt\",\"produk_image\"]",
+									"\t\tstringNullableCol.forEach(dt => {",
+									"\t\t\t\tpm.expect(jsonData).to.have.property(dt)",
+									"\t\t\t\tif (jsonData[dt] !== null) {",
+									"\t\t\t\t\t\tpm.expect(jsonData[dt]).to.be.a(\"string\")",
+									"\t\t\t\t} else {",
+									"\t\t\t\t\t\tpm.expect(jsonData[dt]).to.be.null",
+									"\t\t\t\t}",
+									"\t\t})",
+									"})",
+									"",
+									"pm.test(\"Validate each data type (Inventaris)\", function () {",
+									"    const jsonData = pm.response.json().data.inventaris[0]",
+									"    const stringCol = [\"CreatedAt\",\"UpdatedAt\",\"lokasi\"]",
+									"    stringCol.forEach(dt => {",
+									"        pm.expect(jsonData).to.have.property(dt).that.is.a(\"string\")",
+									"    })",
+									"",
+									"    const numberCol = [\"ID\",\"jumlah\",\"produk_id\"]",
+									"    numberCol.forEach(dt => {",
+									"        pm.expect(jsonData).to.have.property(dt).that.is.a(\"number\")",
+									"    })",
+									"",
+									"    const stringNullableCol = [\"DeletedAt\"]",
+									"    stringNullableCol.forEach(dt => {",
+									"        pm.expect(jsonData).to.have.property(dt)",
+									"        if (jsonData[dt] !== null) {",
+									"            pm.expect(jsonData[dt]).to.be.a(\"string\")",
+									"        } else {",
+									"            pm.expect(jsonData[dt]).to.be.null",
+									"        }",
+									"    })",
+									"})",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/inventaris/2",
+						"description": "API ini digunakan untuk melihat data Inventaris dari sebuah Produk berdasarkan ID Produk"
+					},
+					"response": []
+				},
+				{
+					"name": "Inventaris By Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has data and message\", function () {",
+									"    pm.response.to.have.status(200)",
+									"    const jsonData = pm.response.json()",
+									"    ",
+									"    pm.expect(jsonData).to.have.property(\"data\")",
+									"    pm.expect(jsonData).to.have.property(\"message\")",
+									"    pm.expect(jsonData.data).to.be.an(\"object\")",
+									"})",
+									"",
+									"pm.test(\"Validate each data type\", function () {",
+									"    const jsonData = pm.response.json().data",
+									"    const stringCol = [\"CreatedAt\",\"UpdatedAt\",\"lokasi\"]",
+									"    stringCol.forEach(dt => {",
+									"        pm.expect(jsonData).to.have.property(dt).that.is.a(\"string\")",
+									"    })",
+									"",
+									"    const numberCol = [\"ID\",\"jumlah\",\"produk_id\"]",
+									"    numberCol.forEach(dt => {",
+									"        pm.expect(jsonData).to.have.property(dt).that.is.a(\"number\")",
+									"    })",
+									"",
+									"    const stringNullableCol = [\"DeletedAt\"]",
+									"    stringNullableCol.forEach(dt => {",
+									"        pm.expect(jsonData).to.have.property(dt)",
+									"        if (jsonData[dt] !== null) {",
+									"            pm.expect(jsonData[dt]).to.be.a(\"string\")",
+									"        } else {",
+									"            pm.expect(jsonData[dt]).to.be.null",
+									"        }",
+									"    })",
+									"})",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"jumlah\": 14\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/inventaris/2",
+						"description": "API ini digunakan untuk mengubah data Inventaris berdasarkan ID Inventaris"
+					},
+					"response": []
+				},
+				{
+					"name": "Inventaris By Id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"jumlah\": 4\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/inventaris/destroy/1",
+						"description": "API ini digunakan untuk menghapus Inventaris berdasarkan ID Inventaris"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pesanan",
+			"item": [
+				{
+					"name": "Pesanan",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has data and message\", function () {",
+									"    pm.response.to.have.status(201)",
+									"    const jsonData = pm.response.json()",
+									"    ",
+									"    pm.expect(jsonData).to.have.property(\"data\")",
+									"    pm.expect(jsonData).to.have.property(\"message\")",
+									"    pm.expect(jsonData.data).to.be.an(\"object\")",
+									"})",
+									"",
+									"pm.test(\"Validate each data type\", function () {",
+									"    const jsonData = pm.response.json().data",
+									"    const stringCol = [\"CreatedAt\",\"UpdatedAt\",\"tanggal_pesanan\"]",
+									"    stringCol.forEach(dt => {",
+									"        pm.expect(jsonData).to.have.property(dt).that.is.a(\"string\")",
+									"    })",
+									"",
+									"    const numberCol = [\"ID\",\"jumlah\",\"produk_id\"]",
+									"    numberCol.forEach(dt => {",
+									"        pm.expect(jsonData).to.have.property(dt).that.is.a(\"number\")",
+									"    })",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"jumlah\": 2\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/pesanan/2",
+						"description": "API ini digunakan untuk menambahkan pesanan dengan request jumlah (qty) Produk yang akan dipesan. Dan sistem akan mengurangi total jumlah Produk yang tersedia pada Inventaris"
+					},
+					"response": []
+				},
+				{
+					"name": "Detail Pesanan By Id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has data and message\", function () {",
+									"    pm.response.to.have.status(200)",
+									"    const jsonData = pm.response.json()",
+									"    ",
+									"    pm.expect(jsonData).to.have.property(\"data\")",
+									"    pm.expect(jsonData).to.have.property(\"message\")",
+									"    pm.expect(jsonData.data).to.be.an(\"object\")",
+									"})",
+									"",
+									"pm.test(\"Validate each data type (Pesanan)\", function () {",
+									"    const jsonData = pm.response.json().data",
+									"    const stringCol = [\"CreatedAt\",\"UpdatedAt\",\"tanggal_pesanan\"]",
+									"    stringCol.forEach(dt => {",
+									"        pm.expect(jsonData).to.have.property(dt).that.is.a(\"string\")",
+									"    })",
+									"",
+									"    const numberCol = [\"ID\",\"jumlah\",\"produk_id\"]",
+									"    numberCol.forEach(dt => {",
+									"        pm.expect(jsonData).to.have.property(dt).that.is.a(\"number\")",
+									"    })",
+									"})",
+									"",
+									"pm.test(\"Validate each data type (Produk)\", function () {",
+									"    const jsonData = pm.response.json().data.produk",
+									"    const stringCol = [\"CreatedAt\",\"UpdatedAt\",\"name\",\"deskripsi\",\"kategori\"]",
+									"    stringCol.forEach(dt => {",
+									"        pm.expect(jsonData).to.have.property(dt).that.is.a(\"string\")",
+									"    })",
+									"",
+									"    const numberCol = [\"ID\",\"harga\"]",
+									"    numberCol.forEach(dt => {",
+									"        pm.expect(jsonData).to.have.property(dt).that.is.a(\"number\")",
+									"    })",
+									"",
+									"    const stringNullableCol = [\"DeletedAt\",\"produk_image\"]",
+									"    stringNullableCol.forEach(dt => {",
+									"        pm.expect(jsonData).to.have.property(dt)",
+									"        if (jsonData[dt] !== null) {",
+									"            pm.expect(jsonData[dt]).to.be.a(\"string\")",
+									"        } else {",
+									"            pm.expect(jsonData[dt]).to.be.null",
+									"        }",
+									"    })",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"jumlah\": 10\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/pesanan/1",
+						"description": "API ini digunakan untuk melihat detail Pesanan dengan data Produk berdasarkan ID Pesanan"
+					},
+					"response": []
+				},
+				{
+					"name": "Pesanan By Id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"jumlah\": 10\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/pesanan/destroy/8",
+						"description": "API ini digunakan untuk menghapus Pesanan berdasarkan ID Pesanan"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Produk",
+			"item": [
+				{
+					"name": "All Produk",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has data and message\", function () {",
+									"    pm.response.to.have.status(200)",
+									"    const jsonData = pm.response.json()",
+									"    ",
+									"    pm.expect(jsonData).to.have.property(\"data\")",
+									"    pm.expect(jsonData).to.have.property(\"message\")",
+									"    pm.expect(jsonData.data).to.be.an(\"array\")",
+									"})",
+									"",
+									"pm.test(\"Validate each data type\", function () {",
+									"    const jsonData = pm.response.json()",
+									"    jsonData.data.forEach(item => {",
+									"        const stringCol = [\"CreatedAt\",\"UpdatedAt\",\"name\",\"deskripsi\",\"kategori\"]",
+									"        stringCol.forEach(dt => {",
+									"            pm.expect(item).to.have.property(dt).that.is.a(\"string\")",
+									"        })",
+									"",
+									"        const numberCol = [\"ID\",\"harga\"]",
+									"        numberCol.forEach(dt => {",
+									"            pm.expect(item).to.have.property(dt).that.is.a(\"number\")",
+									"        })",
+									"",
+									"        const stringNullableCol = [\"DeletedAt\",\"produk_image\"]",
+									"        stringNullableCol.forEach(dt => {",
+									"           pm.expect(item).to.have.property(dt)",
+									"            if (item[dt] !== null) {",
+									"                pm.expect(item[dt]).to.be.a(\"string\")",
+									"            } else {",
+									"                pm.expect(item[dt]).to.be.null",
+									"            }",
+									"        })",
+									"    })",
+									"})",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": "http://localhost:8080/api/produk",
+						"description": "API ini digunakan untuk melihat seluruh data Produk"
+					},
+					"response": []
+				},
+				{
+					"name": "Produk By Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has data and message\", function () {",
+									"    pm.response.to.have.status(200)",
+									"    const jsonData = pm.response.json()",
+									"    ",
+									"    pm.expect(jsonData).to.have.property(\"data\")",
+									"    pm.expect(jsonData).to.have.property(\"message\")",
+									"    pm.expect(jsonData.data).to.be.an(\"object\")",
+									"})",
+									"",
+									"pm.test(\"Validate each data type\", function () {",
+									"    const jsonData = pm.response.json().data",
+									"    const stringCol = [\"CreatedAt\",\"UpdatedAt\",\"name\",\"deskripsi\",\"kategori\"]",
+									"    stringCol.forEach(dt => {",
+									"        pm.expect(jsonData).to.have.property(dt).that.is.a(\"string\")",
+									"    })",
+									"",
+									"    const numberCol = [\"ID\",\"harga\"]",
+									"    numberCol.forEach(dt => {",
+									"        pm.expect(jsonData).to.have.property(dt).that.is.a(\"number\")",
+									"    })",
+									"",
+									"    const stringNullableCol = [\"DeletedAt\",\"produk_image\"]",
+									"    stringNullableCol.forEach(dt => {",
+									"        pm.expect(jsonData).to.have.property(dt)",
+									"        if (jsonData[dt] !== null) {",
+									"            pm.expect(jsonData[dt]).to.be.a(\"string\")",
+									"        } else {",
+									"            pm.expect(jsonData[dt]).to.be.null",
+									"        }",
+									"    })",
+									"})",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/produk/2",
+						"description": "API ini digunakan untuk melihat data Produk berdasarkan ID Produk"
+					},
+					"response": []
+				},
+				{
+					"name": "Produk By Kategori",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has data and message\", function () {",
+									"    pm.response.to.have.status(200)",
+									"    const jsonData = pm.response.json()",
+									"    ",
+									"    pm.expect(jsonData).to.have.property(\"data\")",
+									"    pm.expect(jsonData).to.have.property(\"message\")",
+									"    pm.expect(jsonData.data).to.be.an(\"array\")",
+									"})",
+									"",
+									"pm.test(\"Validate each data type\", function () {",
+									"    const jsonData = pm.response.json()",
+									"    jsonData.data.forEach(item => {",
+									"        const stringCol = [\"CreatedAt\",\"UpdatedAt\",\"name\",\"deskripsi\",\"kategori\"]",
+									"        stringCol.forEach(dt => {",
+									"            pm.expect(item).to.have.property(dt).that.is.a(\"string\")",
+									"        })",
+									"",
+									"        const numberCol = [\"ID\",\"harga\"]",
+									"        numberCol.forEach(dt => {",
+									"            pm.expect(item).to.have.property(dt).that.is.a(\"number\")",
+									"        })",
+									"",
+									"        const stringNullableCol = [\"DeletedAt\",\"produk_image\"]",
+									"        stringNullableCol.forEach(dt => {",
+									"           pm.expect(item).to.have.property(dt)",
+									"            if (item[dt] !== null) {",
+									"                pm.expect(item[dt]).to.be.a(\"string\")",
+									"            } else {",
+									"                pm.expect(item[dt]).to.be.null",
+									"            }",
+									"        })",
+									"    })",
+									"})",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/produk/kategori/Metal",
+						"description": "API ini digunakan untuk melihat data Produk berdasarkan Kategori Produk"
+					},
+					"response": []
+				},
+				{
+					"name": "Produk",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has data and message\", function () {",
+									"    pm.response.to.have.status(201)",
+									"    const jsonData = pm.response.json()",
+									"    ",
+									"    pm.expect(jsonData).to.have.property(\"data\")",
+									"    pm.expect(jsonData).to.have.property(\"message\")",
+									"    pm.expect(jsonData.data).to.be.an(\"object\")",
+									"})",
+									"",
+									"pm.test(\"Validate each data type (Produk)\", function () {",
+									"    const jsonData = pm.response.json().data.produk",
+									"    const stringCol = [\"CreatedAt\",\"UpdatedAt\",\"name\",\"deskripsi\",\"kategori\"]",
+									"    stringCol.forEach(dt => {",
+									"        pm.expect(jsonData).to.have.property(dt).that.is.a(\"string\")",
+									"    })",
+									"",
+									"    const numberCol = [\"ID\",\"harga\"]",
+									"    numberCol.forEach(dt => {",
+									"        pm.expect(jsonData).to.have.property(dt).that.is.a(\"number\")",
+									"    })",
+									"",
+									"    const stringNullableCol = [\"DeletedAt\",\"produk_image\"]",
+									"    stringNullableCol.forEach(dt => {",
+									"        pm.expect(jsonData).to.have.property(dt)",
+									"        if (jsonData[dt] !== null) {",
+									"            pm.expect(jsonData[dt]).to.be.a(\"string\")",
+									"        } else {",
+									"            pm.expect(jsonData[dt]).to.be.null",
+									"        }",
+									"    })",
+									"})",
+									"",
+									"pm.test(\"Validate each data type (Inventaris)\", function () {",
+									"    const jsonData = pm.response.json().data.inventaris",
+									"    const stringCol = [\"CreatedAt\",\"UpdatedAt\",\"lokasi\"]",
+									"    stringCol.forEach(dt => {",
+									"        pm.expect(jsonData).to.have.property(dt).that.is.a(\"string\")",
+									"    })",
+									"",
+									"    const numberCol = [\"ID\",\"jumlah\",\"produk_id\"]",
+									"    numberCol.forEach(dt => {",
+									"        pm.expect(jsonData).to.have.property(dt).that.is.a(\"number\")",
+									"    })",
+									"",
+									"    const stringNullableCol = [\"DeletedAt\"]",
+									"    stringNullableCol.forEach(dt => {",
+									"        pm.expect(jsonData).to.have.property(dt)",
+									"        if (jsonData[dt] !== null) {",
+									"            pm.expect(jsonData[dt]).to.be.a(\"string\")",
+									"        } else {",
+									"            pm.expect(jsonData[dt]).to.be.null",
+									"        }",
+									"    })",
+									"})",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "{{$randomProductName}}",
+									"type": "text"
+								},
+								{
+									"key": "deskripsi",
+									"value": "{{$randomLoremLines}}",
+									"type": "text"
+								},
+								{
+									"key": "harga",
+									"value": "{{$randomInt}}",
+									"type": "text"
+								},
+								{
+									"key": "kategori",
+									"value": "{{$randomProductMaterial}}",
+									"type": "text"
+								},
+								{
+									"key": "jumlah",
+									"value": "{{$randomInt}}",
+									"contentType": "",
+									"type": "text"
+								},
+								{
+									"key": "lokasi",
+									"value": "{{$randomCity}}",
+									"type": "text"
+								},
+								{
+									"key": "produk_image",
+									"type": "file",
+									"src": "postman-cloud:///1f01dcbf-1fc3-4650-b55a-27ffa4ad86f6"
+								}
+							]
+						},
+						"url": "http://localhost:8080/api/produk",
+						"description": "API ini digunakan untuk menambahkan Produk beserta Inventaris"
+					},
+					"response": []
+				},
+				{
+					"name": "Produk By Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has data and message\", function () {",
+									"    pm.response.to.have.status(200)",
+									"    const jsonData = pm.response.json()",
+									"    ",
+									"    pm.expect(jsonData).to.have.property(\"data\")",
+									"    pm.expect(jsonData).to.have.property(\"message\")",
+									"    pm.expect(jsonData.data).to.be.an(\"object\")",
+									"})",
+									"",
+									"pm.test(\"Validate each data type\", function () {",
+									"    const jsonData = pm.response.json().data",
+									"    const stringCol = [\"CreatedAt\",\"UpdatedAt\",\"name\",\"deskripsi\",\"kategori\"]",
+									"    stringCol.forEach(dt => {",
+									"        pm.expect(jsonData).to.have.property(dt).that.is.a(\"string\")",
+									"    })",
+									"",
+									"    const numberCol = [\"ID\",\"harga\"]",
+									"    numberCol.forEach(dt => {",
+									"        pm.expect(jsonData).to.have.property(dt).that.is.a(\"number\")",
+									"    })",
+									"",
+									"    const stringNullableCol = [\"DeletedAt\",\"produk_image\"]",
+									"    stringNullableCol.forEach(dt => {",
+									"        pm.expect(jsonData).to.have.property(dt)",
+									"        if (jsonData[dt] !== null) {",
+									"            pm.expect(jsonData[dt]).to.be.a(\"string\")",
+									"        } else {",
+									"            pm.expect(jsonData[dt]).to.be.null",
+									"        }",
+									"    })",
+									"})",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{$randomProductName}}\",\n    \"deskripsi\": \"test update description\",\n    \"harga\": {{$randomInt}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/produk/6",
+						"description": "API ini digunakan untuk mengubah data Produk berdasarkan ID Produk"
+					},
+					"response": []
+				},
+				{
+					"name": "Produk By Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has data and message\", function () {",
+									"    pm.response.to.have.status(200)",
+									"    const jsonData = pm.response.json()",
+									"    ",
+									"    pm.expect(jsonData).to.have.property(\"message\")",
+									"\t\tpm.expect(jsonData[\"message\"]).that.is.a(\"string\")",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/produk/delete/1",
+						"description": "API ini digunakan untuk menghapus Produk berdasarkan ID Produk"
+					},
+					"response": []
+				},
+				{
+					"name": "Permanentally Produk By Id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/produk/destroy/1",
+						"description": "API ini digunakan untuk menghapus permanen Produk berdasarkan ID Produk"
+					},
+					"response": []
+				},
+				{
+					"name": "Download Produk Image",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/produk/produk_image/29"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
